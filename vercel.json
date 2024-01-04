@@ -1,0 +1,12 @@
+{
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/api/index.ts"
+    },
+    {
+      "src": "/unsplash",
+      "dest": "/api/unsplash.ts"
+    }
+  ]
+}
