@@ -7,6 +7,14 @@
     {
       "src": "/unsplash",
       "dest": "/api/unsplash.ts"
+    },
+    {
+      "src": "/pexels",
+      "dest": "/api/pexels.ts"
+    },
+    {
+      "src": "/pixabay",
+      "dest": "/api/pixabay.ts"
     }
   ]
 }

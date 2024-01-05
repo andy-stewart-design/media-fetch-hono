@@ -1,7 +1,6 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { handle } from "hono/vercel";
-import { formatRequestParams } from "@type/format-request-params";
 import type { UnsplashAPIResponse } from "@type/api-response";
 import type { StockImageData } from "@type/image-data";
 
@@ -19,7 +18,7 @@ app.get("/unsplash", async (c) => {
   if (!API_KEY) return c.json({ errors: ["No Unsplash API Key provided"] });
 
   const params = c.req.query();
-  const apiURL = formatRequestParams(params, "unsplash", API_KEY);
+  const apiURL = formatRequestParams(params, API_KEY);
 
   if (!apiURL)
     return c.json({
@@ -50,3 +49,55 @@ app.get("/unsplash", async (c) => {
 });
 
 export default handle(app);
+
+// ------------------------------------------------------------------
+// UNSPLASH PARAMS FORMAT
+// ------------------------------------------------------------------
+
+type RequestParams = Record<string, string>;
+
+export function formatRequestParams(params: RequestParams, key: string) {
+  const query = params.query ?? "nyc";
+  const amount = params.per_page ?? "10";
+  const orientation = params.orientation ?? "all";
+  const color = params.color ?? "any";
+
+  const baseURL = "https://api.unsplash.com/search/photos";
+  const queryParam = `?query=${query}`;
+  const amountParam = `&per_page=${amount}`;
+  const orientationParam = getUnsplashOrientationFilter(orientation);
+  const colorParam = getUnsplashColorFilter(color);
+  const apiKeyParam = `&client_id=${key}`;
+
+  return [
+    baseURL,
+    queryParam,
+    amountParam,
+    orientationParam,
+    colorParam,
+    apiKeyParam,
+  ].join("");
+}
+
+// ------------------------------------------------------------------
+// UNSPLASH PARAMS HELPER FUNCTIONS
+// ------------------------------------------------------------------
+
+function getUnsplashOrientationFilter(value: string) {
+  if (value === undefined) return value;
+
+  const param = "&orientation=";
+  if (value === "all") return undefined;
+  else if (value === "square") return `${param}squarish`;
+  else return `${param}${value}`;
+}
+
+function getUnsplashColorFilter(value: string) {
+  if (value === undefined) return value;
+
+  const param = "&color=";
+  if (value === "any") return undefined;
+  else if (value === "grayscale") return `${param}black_and_white`;
+  else if (value === "pink") return `${param}magenta`;
+  else return `${param}${value}`;
+}
