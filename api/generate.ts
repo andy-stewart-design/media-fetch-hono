@@ -1,8 +1,6 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { handle } from "hono/vercel";
-import type { PixabayAPIResponse } from "@type/api-response";
-import type { StockImageData } from "@type/image-data";
 
 export const config = {
   runtime: "edge",
@@ -12,8 +10,7 @@ const app = new Hono().basePath("/");
 
 app.use("/*", cors());
 
-app.get("/pixabay", async (c) => {
-  // vercel/git test
+app.get("/generate", async (c) => {
   const API_KEY = process.env.IMAGEKIT_KEY;
 
   if (!API_KEY) return c.json({ errors: ["No Pixabay API Key provided"] });
