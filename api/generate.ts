@@ -37,7 +37,7 @@ app.get("/generate", async (c) => {
 
   const imgArray = new Uint8Array(buffer);
 
-  return c.json(imgArray);
+  return c.json({ data: imgArray });
 });
 
 export default handle(app);
