@@ -38,8 +38,9 @@ app.get("/generate", async (c) => {
   //   console.log(buffer);
 
   const imgArray = new Uint8Array(buffer);
+  const base64String = Buffer.from(imgArray).toString("base64");
 
-  return c.json(imgArray);
+  return c.json(base64String);
 });
 
 export default handle(app);
