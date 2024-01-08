@@ -15,6 +15,10 @@
     {
       "src": "/pixabay",
       "dest": "/api/pixabay.ts"
+    },
+    {
+      "src": "/generate",
+      "dest": "/api/generate.ts"
     }
   ]
 }
