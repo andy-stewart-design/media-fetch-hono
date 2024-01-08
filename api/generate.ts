@@ -35,9 +35,11 @@ app.get("/generate", async (c) => {
       errors: ["There was an error generating the array buffer"],
     });
 
-  const imgArray = new Uint8Array(buffer);
+  //   console.log(buffer);
 
-  return c.json({ res, buffer, imgArray });
+  //   const imgArray = new Uint8Array(buffer);
+
+  return c.json(buffer);
 });
 
 export default handle(app);
