@@ -33,6 +33,8 @@ app.get("/pixabay", async (c) => {
 
   const data: PixabayAPIResponse = await res.json();
 
+  console.log({ pixabay: data });
+
   const formattedData: StockImageData[] = data.hits.map((result) => ({
     id: String(Math.random()),
     image_thumbnail: result.previewURL,

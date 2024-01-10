@@ -64,7 +64,12 @@ export function formatRequestParams(params: RequestParams, key: string) {
   const height = params.h ?? undefined;
   const width = params.w ?? undefined;
 
+  console.log({ src, quality, height, width });
+
   if (!src || !quality || !height || !width) return undefined;
 
+  console.log(
+    `https://ik.imagekit.io/${key}/tr:w-${width},h-${height},q-${quality}/${src}`
+  );
   return `https://ik.imagekit.io/${key}/tr:w-${width},h-${height},q-${quality}/${src}`;
 }
