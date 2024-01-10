@@ -12,18 +12,21 @@ app.use("/*", cors());
 
 app.get("/generate", async (c) => {
   const API_KEY = process.env.IMAGEKIT_KEY;
-
   if (!API_KEY) return c.json({ errors: ["No ImageKit API Key provided"] });
 
-  const params = c.req.query();
-  const apiURL = formatRequestParams(params, API_KEY);
+  const res = await fetch(
+    "https://unsplash.com/photos/5oO1xH5h8kQ/download?ixid=M3w1NDg2OTB8MHwxfHNlYXJjaHw5fHxueWN8ZW58MHx8fHwxNzA0ODg5NjgxfDA"
+  );
 
-  if (!apiURL)
-    return c.json({
-      errors: ["Invalid URL returned from the formatRequestParams function"],
-    });
+  //   const params = c.req.query();
+  //   const apiURL = formatRequestParams(params, API_KEY);
 
-  const res = await fetch(apiURL);
+  //   if (!apiURL)
+  //     return c.json({
+  //       errors: ["Invalid URL returned from the formatRequestParams function"],
+  //     });
+
+  //   const res = await fetch(apiURL);
   if (!res.ok)
     return c.json({
       errors: ["There was an error fetching this image"],
@@ -36,15 +39,17 @@ app.get("/generate", async (c) => {
     });
 
   const imgArray = new Uint8Array(buffer);
-  const base64String = arrayBufferToBase64(imgArray);
+  const base64String = u8ToBase64(imgArray);
 
   return c.json(base64String);
 });
 
 export default handle(app);
 
-// Function to convert ArrayBuffer to base64
-function arrayBufferToBase64(u8: Uint8Array) {
+// ------------------------------------------------------------------
+// COVERT UINT8 ARRAY to BASE64
+// ------------------------------------------------------------------
+function u8ToBase64(u8: Uint8Array) {
   const bytes: Array<string> = [];
   u8.forEach((byte) => {
     bytes.push(String.fromCharCode(byte));
@@ -53,7 +58,7 @@ function arrayBufferToBase64(u8: Uint8Array) {
 }
 
 // ------------------------------------------------------------------
-// PIXABAY PARAMS FORMAT
+// IMAGEKIT PARAMS FORMAT
 // ------------------------------------------------------------------
 
 type RequestParams = Record<string, string>;
