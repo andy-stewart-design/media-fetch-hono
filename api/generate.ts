@@ -35,15 +35,22 @@ app.get("/generate", async (c) => {
       errors: ["There was an error generating the array buffer"],
     });
 
-  //   console.log(buffer);
-
   const imgArray = new Uint8Array(buffer);
-  const base64String = Buffer.from(imgArray).toString("base64");
+  const base64String = arrayBufferToBase64(imgArray);
 
   return c.json(base64String);
 });
 
 export default handle(app);
+
+// Function to convert ArrayBuffer to base64
+function arrayBufferToBase64(u8: Uint8Array) {
+  const bytes: Array<string> = [];
+  u8.forEach((byte) => {
+    bytes.push(String.fromCharCode(byte));
+  });
+  return btoa(bytes.join(""));
+}
 
 // ------------------------------------------------------------------
 // PIXABAY PARAMS FORMAT
@@ -60,23 +67,4 @@ export function formatRequestParams(params: RequestParams, key: string) {
   if (!src || !quality || !height || !width) return undefined;
 
   return `https://ik.imagekit.io/${key}/tr:w-${width},h-${height},q-${quality}/${src}`;
-}
-
-// ------------------------------------------------------------------
-// PIXABAY PARAMS HELPER FUNCTIONS
-// ------------------------------------------------------------------
-
-function getPixabayOrientationFilter(value: string) {
-  const param = "&orientation=";
-  if (value === "all" || value === "square") return undefined;
-  else if (value === "landscape") return `${param}horizontal`;
-  else if (value === "portrait") return `${param}vertical`;
-}
-
-function getPixabayColorFilter(value: string) {
-  const param = "&colors=";
-  if (value === "any") return undefined;
-  else if (value === "teal") return `${param}turquoise`;
-  else if (value === "purple") return `${param}lilac`;
-  else return `${param}${value}`;
 }
