@@ -17,8 +17,11 @@ app.get("/generate", async (c) => {
   if (!API_KEY) return c.json({ errors: ["No ImageKit API Key provided"] });
 
   const res = await fetch(
-    `https://ik.imagekit.io/${API_KEY}/tr:w-1600,h-1600,q-50/https://images.pexels.com/photos/5011944/pexels-photo-5011944.jpeg`
+    `https://ik.imagekit.io/${API_KEY}/tr:w-1600,h-1600,q-50/https://unsplash.com/photos/kZokA2VTKn4/download?ixid=M3w1NDg2OTB8MHwxfHNlYXJjaHw1fHxueWN8ZW58MHx8fHwxNzA0OTIwOTY0fDA`
   );
+
+  //   https://unsplash.com/photos/kZokA2VTKn4/download?ixid=M3w1NDg2OTB8MHwxfHNlYXJjaHw1fHxueWN8ZW58MHx8fHwxNzA0OTIwOTY0fDA
+  //   https://images.pexels.com/photos/5011944/pexels-photo-5011944.jpeg
 
   //   const params = c.req.query();
   //   const apiURL = formatRequestParams(params, API_KEY);
