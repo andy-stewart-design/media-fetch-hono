@@ -12,10 +12,12 @@ app.use("/*", cors());
 
 app.get("/generate", async (c) => {
   const API_KEY = process.env.IMAGEKIT_KEY;
+  console.log(API_KEY);
+
   if (!API_KEY) return c.json({ errors: ["No ImageKit API Key provided"] });
 
   const res = await fetch(
-    "https://unsplash.com/photos/5oO1xH5h8kQ/download?ixid=M3w1NDg2OTB8MHwxfHNlYXJjaHw5fHxueWN8ZW58MHx8fHwxNzA0ODg5NjgxfDA"
+    `https://ik.imagekit.io/ijmrm3xsf/tr:w-1600,h-1600,q-50/https://images.pexels.com/photos/5011944/pexels-photo-5011944.jpeg`
   );
 
   //   const params = c.req.query();
