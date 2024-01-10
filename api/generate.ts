@@ -13,7 +13,7 @@ app.use("/*", cors());
 app.get("/generate", async (c) => {
   const API_KEY = process.env.IMAGEKIT_KEY;
 
-  if (!API_KEY) return c.json({ errors: ["No Pixabay API Key provided"] });
+  if (!API_KEY) return c.json({ errors: ["No ImageKit API Key provided"] });
 
   const params = c.req.query();
   const apiURL = formatRequestParams(params, API_KEY);
