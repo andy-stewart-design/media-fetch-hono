@@ -17,6 +17,35 @@ const app = new Hono().basePath("/");
 
 app.use("/*", cors());
 
+app.post("/generate", async (c) => {
+  const API_KEY = process.env.IMAGEKIT_KEY;
+  if (!API_KEY) return c.json({ errors: ["No ImageKit API Key provided"] });
+
+  const body: StockImageData = await c.req.json();
+  const apiURL = formatRequestParams2(body, API_KEY);
+  if (!apiURL)
+    return c.json({
+      errors: ["Invalid URL returned from the formatRequestParams function"],
+    });
+
+  const res = await fetch(apiURL);
+  if (!res.ok)
+    return c.json({
+      errors: ["There was an error fetching the requested image"],
+    });
+
+  const buffer = await res.arrayBuffer();
+  if (!buffer)
+    return c.json({
+      errors: ["There was an error generating the array buffer"],
+    });
+
+  const imgArray = new Uint8Array(buffer);
+  const base64String = u8ToBase64(imgArray);
+
+  return c.json({ data: base64String });
+});
+
 app.get("/generate", async (c) => {
   const API_KEY = process.env.IMAGEKIT_KEY;
   if (!API_KEY) return c.json({ errors: ["No ImageKit API Key provided"] });
@@ -53,35 +82,6 @@ app.get("/generate", async (c) => {
   const base64String = u8ToBase64(imgArray);
 
   return c.json(base64String);
-});
-
-app.post("/generate", async (c) => {
-  const API_KEY = process.env.IMAGEKIT_KEY;
-  if (!API_KEY) return c.json({ errors: ["No ImageKit API Key provided"] });
-
-  const body: StockImageData = await c.req.json();
-  const apiURL = formatRequestParams2(body, API_KEY);
-  if (!apiURL)
-    return c.json({
-      errors: ["Invalid URL returned from the formatRequestParams function"],
-    });
-
-  const res = await fetch(apiURL);
-  if (!res.ok)
-    return c.json({
-      errors: ["There was an error fetching the requested image"],
-    });
-
-  const buffer = await res.arrayBuffer();
-  if (!buffer)
-    return c.json({
-      errors: ["There was an error generating the array buffer"],
-    });
-
-  const imgArray = new Uint8Array(buffer);
-  const base64String = u8ToBase64(imgArray);
-
-  return c.json({ data: base64String });
 });
 
 export default handle(app);
