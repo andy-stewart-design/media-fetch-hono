@@ -53,7 +53,7 @@ app.get("/generate", async (c) => {
 app.post("/generate", async (c) => {
   const body = await c.req.json();
   console.log(body);
-  c.json({ msg: "Success!" });
+  return c.json({ msg: "Success!" });
 });
 
 export default handle(app);
