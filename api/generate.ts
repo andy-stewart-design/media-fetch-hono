@@ -6,14 +6,19 @@ export const config = {
   runtime: "edge",
 };
 
+interface StockImageData {
+  src: string;
+  width: number;
+  height: number;
+  quality: number;
+}
+
 const app = new Hono().basePath("/");
 
 app.use("/*", cors());
 
 app.get("/generate", async (c) => {
   const API_KEY = process.env.IMAGEKIT_KEY;
-  console.log(API_KEY);
-
   if (!API_KEY) return c.json({ errors: ["No ImageKit API Key provided"] });
 
   const res = await fetch(
@@ -51,9 +56,32 @@ app.get("/generate", async (c) => {
 });
 
 app.post("/generate", async (c) => {
-  const body = await c.req.json();
-  console.log(body);
-  return c.json(body);
+  const API_KEY = process.env.IMAGEKIT_KEY;
+  if (!API_KEY) return c.json({ errors: ["No ImageKit API Key provided"] });
+
+  const body: StockImageData = await c.req.json();
+  const apiURL = formatRequestParams2(body, API_KEY);
+  if (!apiURL)
+    return c.json({
+      errors: ["Invalid URL returned from the formatRequestParams function"],
+    });
+
+  const res = await fetch(apiURL);
+  if (!res.ok)
+    return c.json({
+      errors: ["There was an error fetching the requested image"],
+    });
+
+  const buffer = await res.arrayBuffer();
+  if (!buffer)
+    return c.json({
+      errors: ["There was an error generating the array buffer"],
+    });
+
+  const imgArray = new Uint8Array(buffer);
+  const base64String = u8ToBase64(imgArray);
+
+  return c.json({ data: base64String });
 });
 
 export default handle(app);
@@ -88,5 +116,16 @@ export function formatRequestParams(params: RequestParams, key: string) {
   console.log(
     `https://ik.imagekit.io/${key}/tr:w-${width},h-${height},q-${quality}/${src}`
   );
+  return `https://ik.imagekit.io/${key}/tr:w-${width},h-${height},q-${quality}/${src}`;
+}
+
+export function formatRequestParams2(params: StockImageData, key: string) {
+  const src = params.src ?? undefined;
+  const quality = params.quality ?? undefined;
+  const height = params.height ?? undefined;
+  const width = params.width ?? undefined;
+
+  if (!src || !quality || !height || !width) return undefined;
+
   return `https://ik.imagekit.io/${key}/tr:w-${width},h-${height},q-${quality}/${src}`;
 }
