@@ -22,6 +22,7 @@ app.get("/generate", async (c) => {
 
   //   https://unsplash.com/photos/kZokA2VTKn4/download?ixid=M3w1NDg2OTB8MHwxfHNlYXJjaHw1fHxueWN8ZW58MHx8fHwxNzA0OTIwOTY0fDA
   //   https://images.pexels.com/photos/5011944/pexels-photo-5011944.jpeg
+  //   https://pixabay.com/get/gf2e0f652d7e52d8bfbac17fc571f7e0654eba79141bd466c6d0b42691f8dc9a74194db3ce6b1adeb7b5658283658e37da751a99cd83407ea472b347474372f2e_1280.jpg
 
   //   const params = c.req.query();
   //   const apiURL = formatRequestParams(params, API_KEY);
@@ -47,6 +48,12 @@ app.get("/generate", async (c) => {
   const base64String = u8ToBase64(imgArray);
 
   return c.json(base64String);
+});
+
+app.post("/generate", async (c) => {
+  const body = await c.req.json();
+  console.log(body);
+  c.json({ msg: "Success!" });
 });
 
 export default handle(app);
