@@ -42,9 +42,11 @@ app.get("/pexels", async (c) => {
     width: result.width,
     height: result.height,
     image_thumbnail: result.src.tiny,
-    image_large: result.src.original,
+    image_large: result.src.medium,
+    image_download: result.src.original,
     image_link: result.url,
     photographer: result.photographer,
+    photographer_avatar: undefined,
     photographer_link: result.photographer_url,
     source: "Pexels",
   }));

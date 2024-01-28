@@ -33,16 +33,19 @@ app.get("/pixabay", async (c) => {
 
   const data: PixabayAPIResponse = await res.json();
 
-  console.log({ pixabay: data });
+  // console.log({ pixabay: data });
 
   const formattedData: StockImageData[] = data.hits.map((result) => ({
     id: String(Math.random()),
-    image_thumbnail: result.previewURL,
     width: result.imageWidth,
     height: result.imageHeight,
-    image_large: result.largeImageURL,
+    image_thumbnail: result.previewURL,
+    image_large: result.webformatURL,
+    image_download: result.largeImageURL,
     image_link: result.pageURL,
     photographer: result.user,
+    photographer_avatar:
+      result.userImageURL !== "" ? result.userImageURL : undefined,
     photographer_link: `https://pixabay.com/users/${result.user}-${result.user_id}`,
     source: "Pixabay",
   }));

@@ -38,9 +38,11 @@ app.get("/unsplash", async (c) => {
     width: result.width,
     height: result.height,
     image_thumbnail: result.urls.thumb,
-    image_large: result.links.download,
+    image_large: result.urls.regular,
+    image_download: result.links.download,
     image_link: result.links.html,
     photographer: result.user.name,
+    photographer_avatar: result.user.profile_image.small,
     photographer_link: result.user.links.html,
     source: "Unsplash",
   }));
