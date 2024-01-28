@@ -42,7 +42,7 @@ app.get("/unsplash", async (c) => {
     image_download: result.links.download,
     image_link: result.links.html,
     photographer: result.user.name,
-    photographer_avatar: result.user.profile_image.small,
+    photographer_avatar: result.user.profile_image.medium,
     photographer_link: result.user.links.html,
     source: "Unsplash",
   }));
