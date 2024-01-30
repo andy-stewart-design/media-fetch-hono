@@ -64,19 +64,26 @@ type RequestParams = Record<string, string>;
 
 export function formatRequestParams(params: RequestParams) {
   const query = params.query ?? "nyc";
+  const page = params.page ?? "1";
   const amount = params.per_page ?? "10";
   const orientation = params.orientation ?? "all";
   const color = params.color ?? "any";
 
   const baseURL = "https://api.pexels.com/v1/search";
   const queryParam = `?query=${query}`;
+  const pageParam = `&page=${page}`;
   const amountParam = `&per_page=${amount}`;
   const orientationParam = getPexelsOrientationFilter(orientation);
   const colorParam = getPexelsColorFilter(color);
 
-  return [baseURL, queryParam, amountParam, orientationParam, colorParam].join(
-    ""
-  );
+  return [
+    baseURL,
+    queryParam,
+    pageParam,
+    amountParam,
+    orientationParam,
+    colorParam,
+  ].join("");
 }
 
 // ------------------------------------------------------------------

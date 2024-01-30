@@ -60,12 +60,14 @@ type RequestParams = Record<string, string>;
 
 export function formatRequestParams(params: RequestParams, key: string) {
   const query = params.query ?? "nyc";
+  const page = params.page ?? "1";
   const amount = params.per_page ?? "10";
   const orientation = params.orientation ?? "all";
   const color = params.color ?? "any";
 
   const baseURL = "https://api.unsplash.com/search/photos";
   const queryParam = `?query=${query}`;
+  const pageParam = `&page=${page}`;
   const amountParam = `&per_page=${amount}`;
   const orientationParam = getUnsplashOrientationFilter(orientation);
   const colorParam = getUnsplashColorFilter(color);
@@ -74,6 +76,7 @@ export function formatRequestParams(params: RequestParams, key: string) {
   return [
     baseURL,
     queryParam,
+    pageParam,
     amountParam,
     orientationParam,
     colorParam,

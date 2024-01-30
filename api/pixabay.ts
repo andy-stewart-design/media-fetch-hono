@@ -63,6 +63,7 @@ type RequestParams = Record<string, string>;
 
 export function formatRequestParams(params: RequestParams, key: string) {
   const query = params.query ?? "nyc";
+  const page = params.page ?? "1";
   const amount = params.per_page ?? "10";
   const orientation = params.orientation ?? "all";
   const color = params.color ?? "any";
@@ -70,6 +71,7 @@ export function formatRequestParams(params: RequestParams, key: string) {
   const baseURL = "https://pixabay.com/api/";
   const apiKeyParam = `?key=${key}`;
   const queryParam = `&q=${query}`;
+  const pageParam = `&page=${page}`;
   const amountParam = `&per_page=${amount}`;
   const orientationParam = getPixabayOrientationFilter(orientation);
   const colorParam = getPixabayColorFilter(color);
@@ -78,6 +80,7 @@ export function formatRequestParams(params: RequestParams, key: string) {
     baseURL,
     apiKeyParam,
     queryParam,
+    pageParam,
     amountParam,
     orientationParam,
     colorParam,
