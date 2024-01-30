@@ -39,7 +39,7 @@ app.get("/pixabay", async (c) => {
     id: String(Math.random()),
     width: result.imageWidth,
     height: result.imageHeight,
-    image_thumbnail: result.previewURL,
+    image_thumbnail: result.webformatURL,
     image_large: result.webformatURL,
     image_download: result.largeImageURL,
     image_link: result.pageURL,
@@ -50,7 +50,7 @@ app.get("/pixabay", async (c) => {
     source: "Pixabay",
   }));
 
-  return c.json(formattedData);
+  return c.json({ total: data.totalHits, results: formattedData });
 });
 
 export default handle(app);

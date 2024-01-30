@@ -47,7 +47,7 @@ app.get("/unsplash", async (c) => {
     source: "Unsplash",
   }));
 
-  return c.json(formattedData);
+  return c.json({ total: data.total, results: formattedData });
 });
 
 export default handle(app);

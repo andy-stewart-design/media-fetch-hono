@@ -42,7 +42,7 @@ app.get("/pexels", async (c) => {
     width: result.width,
     height: result.height,
     image_thumbnail: result.src.tiny,
-    image_large: result.src.medium,
+    image_large: result.src.large,
     image_download: result.src.original,
     image_link: result.url,
     photographer: result.photographer,
@@ -51,7 +51,7 @@ app.get("/pexels", async (c) => {
     source: "Pexels",
   }));
 
-  return c.json(formattedData);
+  return c.json({ total: data.total_results, results: formattedData });
 });
 
 export default handle(app);
