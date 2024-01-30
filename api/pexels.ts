@@ -41,7 +41,7 @@ app.get("/pexels", async (c) => {
     id: String(Math.random()),
     width: result.width,
     height: result.height,
-    image_thumbnail: result.src.tiny,
+    image_thumbnail: result.src.small,
     image_large: result.src.large,
     image_download: result.src.original,
     image_link: result.url,
